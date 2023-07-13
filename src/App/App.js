@@ -1,49 +1,21 @@
 import { useState } from 'react';
-import {
-  Routes,
-  Route,
-  createSearchParams,
-  useSearchParams,
-  useNavigate,
-} from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Routes, Route, useSearchParams } from 'react-router-dom';
 import 'reactjs-popup/dist/index.css';
 
-import { fetchMovies } from '../data/slices';
-import {
-  ENDPOINT_SEARCH,
-  ENDPOINT_DISCOVER,
-  ENDPOINT,
-  API_KEY,
-} from '../common/constants';
+import { ENDPOINT, API_KEY } from '../common/constants';
 import Header from '../components/Header';
 import YouTubePlayer from '../components/YoutubePlayer';
 import Modal from '../components/Modal';
 import { Home, Starred, WatchLater } from '../pages';
 
 import './styles.scss';
+import Footer from '../components/Footer/Footer';
+import ErrorBanner from '../components/ErrorBanner/ErrorBanner';
 
 function App() {
-  const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const [videoKey, setVideoKey] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate();
-
-  const getSearchResults = (query) => {
-    if (query !== '') {
-      dispatch(fetchMovies(`${ENDPOINT_SEARCH}&query=${query}`));
-      setSearchParams(createSearchParams({ search: query }));
-    } else {
-      dispatch(fetchMovies(ENDPOINT_DISCOVER));
-      setSearchParams();
-    }
-  };
-
-  const searchMovies = (query) => {
-    navigate('/');
-    getSearchResults(query);
-  };
 
   const getMovie = async (id) => {
     const URL = `${ENDPOINT}/movie/${id}?api_key=${API_KEY}&append_to_response=videos`;
@@ -96,7 +68,9 @@ function App() {
           <YouTubePlayer videoKey={videoKey} />
         </Modal>
       </div>
-      <Header searchMovies={searchMovies} />
+      <Header setSearchParams={setSearchParams} />
+      <Footer />
+      <ErrorBanner />
     </div>
   );
 }

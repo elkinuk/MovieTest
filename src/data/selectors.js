@@ -1,6 +1,8 @@
 import { useSelector } from 'react-redux';
 
-export const moviesSelector = () => useSelector((state) => state.movies);
+export const moviesStatusSelector = () =>
+  useSelector((state) => state.movies.fetchStatus);
+export const moviesSelector = () => useSelector((state) => state.movies.movies);
 export const starredMoviesSelector = () =>
   useSelector((state) => state.starred);
 export const watchLaterSelector = () =>

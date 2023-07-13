@@ -25,8 +25,12 @@ function YoutubePlayer({ videoKey }) {
   );
 }
 
+YoutubePlayer.defaultProps = {
+  videoKey: undefined,
+};
+
 YoutubePlayer.propTypes = {
-  videoKey: PropTypes.string.isRequired,
+  videoKey: PropTypes.string,
 };
 
 export default YoutubePlayer;

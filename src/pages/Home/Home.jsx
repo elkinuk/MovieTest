@@ -1,32 +1,80 @@
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import { moviesSelector } from '../../data/selectors';
+import { moviesSelector, moviesStatusSelector } from '../../data/selectors';
+import { fetchMovies, moviesSlice } from '../../data/slices';
 import Movies from '../../components/MoviesList';
+import {
+  ENDPOINT_DISCOVER,
+  ENDPOINT_SEARCH,
+  FETCH_STATUS,
+} from '../../common/constants';
 
 import '../styles.scss';
-import { fetchMovies } from '../../data/slices';
-import { ENDPOINT_DISCOVER, ENDPOINT_SEARCH } from '../../common/constants';
 
 function Home({ searchParams, viewTrailer }) {
   const dispatch = useDispatch();
   const movies = moviesSelector();
+  const moviesStatus = moviesStatusSelector();
   const searchQuery = searchParams.get('search');
+  const [currentPage, setCurrentPage] = useState(1);
+  const { removeAllMovies } = moviesSlice.actions;
 
-  const getMovies = () => {
-    if (searchQuery) {
-      dispatch(fetchMovies(`${ENDPOINT_SEARCH}&query=${searchQuery}`));
-    } else {
-      dispatch(fetchMovies(ENDPOINT_DISCOVER));
+  const getMovies = useCallback(
+    (page) => {
+      if (searchQuery) {
+        dispatch(
+          fetchMovies(
+            `${ENDPOINT_SEARCH}&query=${searchQuery}&page=${
+              page || currentPage
+            }`,
+          ),
+        );
+      } else {
+        dispatch(
+          fetchMovies(`${ENDPOINT_DISCOVER}&page=${page || currentPage}`),
+        );
+      }
+    },
+    [currentPage, searchQuery],
+  );
+
+  const loadMoreHandler = useCallback(() => {
+    const page = currentPage + 1;
+    setCurrentPage(page);
+    getMovies(page);
+  }, [currentPage]);
+
+  const handleScroll = useCallback(() => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop !==
+      document.documentElement.offsetHeight
+    ) {
+      return;
     }
-  };
+    loadMoreHandler();
+  }, [loadMoreHandler]);
 
   useEffect(() => {
-    getMovies();
-  }, []);
+    dispatch(removeAllMovies());
+    if (searchParams) {
+      setCurrentPage(1);
+      getMovies(1);
+    } else getMovies();
+  }, [searchParams]);
 
-  return <Movies movies={movies.movies.results} viewTrailer={viewTrailer} />;
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [currentPage]);
+
+  return (
+    <>
+      <Movies movies={movies} viewTrailer={viewTrailer} />
+      {moviesStatus === FETCH_STATUS.loading && <span className="spinner" />}
+    </>
+  );
 }
 
 Home.propTypes = {
