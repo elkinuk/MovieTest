@@ -30,7 +30,7 @@ function WatchLater({ viewTrailer }) {
 
           <div className="text-center">
             <button
-              className="btn btn-primary"
+              className="btn btn-primary remove-btn"
               onClick={clearAllWatchLater}
               type="button"
             >
