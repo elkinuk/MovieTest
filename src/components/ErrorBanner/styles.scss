@@ -1,0 +1,13 @@
+.error-container {
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+  padding: 20px 30px;
+  border-radius: 10px;
+  background: #ff4769;
+
+  .error-message {
+    color: #fff;
+    font-weight: 800;
+  }
+}

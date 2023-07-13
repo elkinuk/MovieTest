@@ -1,0 +1,10 @@
+{
+  "src/**/*.{js,jsx}": [
+    "eslint \"./src/**/*{.js,.jsx}\" --fix",
+    "git add"
+  ],
+  "src/**/*.scss": [
+    "stylelint --di --fix",
+    "git add"
+  ]
+}

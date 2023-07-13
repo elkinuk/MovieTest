@@ -1,0 +1,16 @@
+.video-player {
+  &__wrapper {
+    width: 640px;
+    height: 360px;
+
+    @media (max-width: 850px) {
+      width: 450px;
+      height: 270px;
+    }
+
+    @media (max-width: 630px) {
+      width: 300px;
+      height: 200px;
+    }
+  }
+}
