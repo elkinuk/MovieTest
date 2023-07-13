@@ -2,14 +2,23 @@ import { Link, NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import './styles.scss';
+
+import { useState } from 'react';
 import { starredMoviesSelector } from '../../data/selectors';
 
-function Header({ searchMovies }) {
+import Search from './Search/Search';
+
+function Header({ setSearchParams }) {
   const starredMovies = starredMoviesSelector();
+  const [searchValue, setSearchValue] = useState();
+
+  const homeHandler = () => {
+    setSearchValue('');
+  };
 
   return (
     <header>
-      <Link to="/" data-testid="home" onClick={() => searchMovies('')}>
+      <Link to="/" data-testid="home" onClick={homeHandler}>
         <i className="bi bi-film" />
       </Link>
 
@@ -33,23 +42,17 @@ function Header({ searchMovies }) {
         </NavLink>
       </nav>
 
-      <div className="input-group rounded">
-        <input
-          type="search"
-          data-testid="search-movies"
-          onKeyUp={(e) => searchMovies(e.target.value)}
-          className="form-control rounded"
-          placeholder="Search movies..."
-          aria-label="Search movies"
-          aria-describedby="search-addon"
-        />
-      </div>
+      <Search
+        setSearchParams={setSearchParams}
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+      />
     </header>
   );
 }
 
 Header.propTypes = {
-  searchMovies: PropTypes.func.isRequired,
+  setSearchParams: PropTypes.func.isRequired,
 };
 
 export default Header;

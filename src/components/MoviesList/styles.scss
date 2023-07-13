@@ -171,3 +171,13 @@
     }
   }
 }
+
+.movies {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+
+  @media (max-width: 576px) {
+    flex-direction: column;
+  }
+}

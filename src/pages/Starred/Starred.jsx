@@ -27,7 +27,7 @@ function Starred({ viewTrailer }) {
 
           <div className="text-center">
             <button
-              className="btn btn-primary"
+              className="btn btn-primary remove-btn"
               onClick={clearAllStarredHandler}
               type="button"
             >

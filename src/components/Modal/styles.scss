@@ -1,0 +1,47 @@
+.modal1 {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(1, 1, 1, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+
+  .body {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 50px 80px;
+    width: auto;
+
+    @media (max-width: 850px) {
+      padding: 30px;
+    }
+
+    button.close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: block;
+      font-size: 50px;
+      line-height: 20px;
+      color: #111;
+      background: transparent;
+      border: none;
+      margin: 10px;
+
+      span {
+        vertical-align: text-top;
+      }
+
+      @media (max-width: 850px) {
+        margin: 0;
+        font-size: 30px;
+      }
+    }
+  }
+}
